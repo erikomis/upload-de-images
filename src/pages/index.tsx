@@ -62,6 +62,10 @@ export default function Home(): JSX.Element {
   if (isLoading && !isError) {
     return <Loading />;
   }
+
+  if (isLoading && isError) {
+    return <Error />;
+  }
   // TODO RENDER ERROR SCREEN
 
   return (
