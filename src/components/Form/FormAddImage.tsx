@@ -21,6 +21,7 @@ export function FormAddImage({ closeModal }: FormAddImageProps): JSX.Element {
   const [imageUrl, setImageUrl] = useState('');
   const [localImageUrl, setLocalImageUrl] = useState('');
   const toast = useToast();
+
   const acceptedFormatsRegex =
     /(?:([^:/?#]+):)?(?:([^/?#]*))?([^?#](?:jpeg|gif|png))(?:\?([^#]*))?(?:#(.*))?/g;
 
@@ -63,12 +64,10 @@ export function FormAddImage({ closeModal }: FormAddImageProps): JSX.Element {
         url: imageUrl,
       });
     },
-    // TODO MUTATION API POST REQUEST,
     {
       onSuccess: () => {
         queryClient.invalidateQueries('images');
       },
-      // TODO ONSUCCESS MUTATION
     }
   );
 
@@ -81,34 +80,25 @@ export function FormAddImage({ closeModal }: FormAddImageProps): JSX.Element {
       if (!imageUrl) {
         toast({
           status: 'error',
-          title: 'Imagem nao adicionada',
+          title: 'Imagem não adicionada',
           description:
-            'E preciso adicionar e  aguardar o upload de uma imagem antes de realizar o cadastro',
+            'É preciso adicionar e aguardar o upload de uma imagem antes de realizar o cadastro.',
         });
-
         return;
       }
-
       await mutation.mutateAsync(data);
-
       toast({
-        status: 'success',
-        title: 'Image cadastrada',
+        title: 'Imagem cadastrada',
         description: 'Sua imagem foi cadastrada com sucesso.',
+        status: 'success',
       });
-      // TODO SHOW ERROR TOAST IF IMAGE URL DOES NOT EXISTS
-      // TODO EXECUTE ASYNC MUTATION
-      // TODO SHOW SUCCESS TOAST
     } catch {
-      // TODO SHOW ERROR TOAST IF SUBMIT FAILED
-
       toast({
+        title: 'Falha no cadastro',
+        description: 'Ocorreu um erro ao tentar cadastrar a sua imagem.',
         status: 'error',
-        title: 'falha',
-        description: 'Ocorreu um erro ao  tentar cadastrar a sua imagem',
       });
     } finally {
-      // TODO CLEAN FORM, STATES AND CLOSE MODAL
       reset();
       setImageUrl('');
       setLocalImageUrl('');
