@@ -9,28 +9,27 @@ import { Loading } from '../components/Loading';
 import { Error } from '../components/Error';
 
 interface Image {
-  title:string
-  description:string
-  url:string
-  ts:number
-  id:string
+  title: string;
+  description: string;
+  url: string;
+  ts: number;
+  id: string;
 }
 
 interface GetImagesResponse {
-  after:string;
-  data:Image[]
+  after: string;
+  data: Image[];
 }
 
 export default function Home(): JSX.Element {
-
-  async function fetchImages ({pageParam=null}) :Promise<GetImagesResponse>{
-    const {data} = await api('/api/images',{
+  async function fetchImages({ pageParam = null }): Promise<GetImagesResponse> {
+    const { data } = await api('/api/images', {
       params: {
-        after:pageParam
-      }
-    })
+        after: pageParam,
+      },
+    });
 
-    return data
+    return data;
   }
   const {
     data,
@@ -41,9 +40,12 @@ export default function Home(): JSX.Element {
     hasNextPage,
   } = useInfiniteQuery(
     'images',
+    fetchImages,
+    {
+      getNextPageParam: lastPage => lastPage?.after || null,
+    }
 
     // TODO AXIOS REQUEST WITH PARAM
-    ,
     // TODO GET AND RETURN NEXT PAGE PARAM
   );
 
