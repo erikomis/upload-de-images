@@ -50,11 +50,18 @@ export default function Home(): JSX.Element {
   );
 
   const formattedData = useMemo(() => {
-    // TODO FORMAT AND FLAT DATA ARRAY
+    const formatted = data?.pages.flatMap(ImageData => {
+      return ImageData.data.flat();
+    });
+
+    return formatted;
   }, [data]);
 
   // TODO RENDER LOADING SCREEN
 
+  if (isLoading && !isError) {
+    return <Loading />;
+  }
   // TODO RENDER ERROR SCREEN
 
   return (
